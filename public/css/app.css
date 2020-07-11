@@ -31219,6 +31219,14 @@ a.text-muted:hover {
   color: #ffffff;
 }@charset "UTF-8";
 
+.text-blue {
+  color: #3490dc;
+}
+
+.text-white {
+  color: #fff;
+}
+
 /*!
  * Bootstrap v4.5.0 (https://getbootstrap.com/)
  * Copyright 2011-2020 The Bootstrap Authors
@@ -48227,5 +48235,12 @@ readers do not read off random characters that represent icons */
 .fab {
   font-family: "Font Awesome 5 Brands";
   font-weight: 400;
+}
+
+.router-link-exact-active,
+.router-link-exact-active:focus,
+.router-link-exact-active:hover {
+  background-color: #007bff !important;
+  color: white !important;
 }
 
