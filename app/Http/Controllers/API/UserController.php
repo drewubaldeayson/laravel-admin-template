@@ -37,7 +37,7 @@ class UserController extends Controller
             'password' => 'required|string|min:6',
         ]);
 
-        return User::create([
+        User::create([
             'name' => $request['name'],
             'email' => $request['email'],
             'type' => $request['type'],
@@ -45,6 +45,8 @@ class UserController extends Controller
             'photo' => $request['photo'],
             'password' => Hash::make($request['password'])
         ]);
+
+        return ["message" => 'User is added successfully!'];
     }
 
     /**
@@ -67,7 +69,20 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+
+        $user = User::findOrFail($id);
+
+        $this->validate($request,[
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users,email,'. $user->id,
+            'type' => 'required',
+            'bio' => 'required|string|max:255',
+            'password' => 'sometimes|string|min:6'
+        ]);
+
+        $user->update($request->all());
+
+        return ["message" => 'User is updated successfully!'];
     }
 
     /**
@@ -78,6 +93,9 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $user = User::findOrFail($id);
+
+        $user->delete();
+        return ["message" => 'User is deleted successfully!'];
     }
 }
