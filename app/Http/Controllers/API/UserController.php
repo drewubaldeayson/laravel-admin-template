@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -14,6 +15,11 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    public function __construct(){
+        $this->middleware('auth.basic');
+    }
+
     public function index()
     {
         // return User::all();
@@ -58,6 +64,26 @@ class UserController extends Controller
     public function show($id)
     {
         //
+    }
+
+    public function profile()
+    {
+        return Auth::user();
+    }
+
+    public function profileUpdate(Request $request, $id)
+    {
+        $user = User::findOrFail($id);
+
+        $this->validate($request,[
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users,email,'. $user->id,
+            'bio' => 'required|string|max:255'
+        ]);
+
+        $user->update($request->all());
+
+        return ["message" => 'Your profile has been updated successfully!'];
     }
 
     /**
